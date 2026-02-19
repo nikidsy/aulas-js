@@ -1,0 +1,22 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+}
+
+ul {
+    list-style-type: disc;
+}
+
+input[type="text"] {
+    padding: 10px;
+    margin-right: 10px;
+}
+
+button {
+    padding: 8px 12px;
+    background-color: #06a9b2;
+    color: rgb(255, 255, 255);
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
