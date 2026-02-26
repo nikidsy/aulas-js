@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Produtos</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="container">
+    <h1>Cadastro de Produtos</h1>
+    <form action="" id="produtoForm">
+    <label for="name">
+    </label><input type="text" name="name" id="name">
+
+    <label for="preco">
+    </label><input type="number" name="preco" id="preco" step="0.10" required>
+
+    <label for="disponibilidade">Disponibilidade</label>
+    <select name="disponibilidade" id="disponibilidade">
+        <option value="Disponivel">Disponivel</option>
+        <option value="Indisponivel">Indisponivel</option>
+    </select> <br> <br>
+
+    <input type="hidden" id="produtoId">
+    <button type="submit">Salvar</button>
+    <button type="button" id="cancelar">Cancelar</button>
+    </form>
+
+    <h2>Lista de Produtos</h2>
+    <table id="produtoTable">
+        <thead>
+        <tr>
+            <td>Name</td>
+            <td>Preço</td>
+            <td>Disponibilildade</td>
+            <td>ações</td>
+        </tr>
+        </thead>
+        <tbody>
+        <!--        js-->
+        </tbody>
+    </table>
+</div>
+
+<script src="js/cadastro.js"></script>
+</body>
+</html>
