@@ -1,79 +1,112 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const produtoFormElement = document.getElementById("produtoForm");
-    const produtoElement = document.getElementById("produtoTable");
-    this.getElementsByTagName('tbody')[0];
-    const produtoIdElement = document.getElementById("produtoId");
-    const cancelarElement = document.getElementById("cancelar");
+document.addEventListener('DOMContentLoaded', function () {
 
-    let editing = false;
+
+    const produtoFormElement = document.getElementById("produtoForm")
+    const tbody = document.getElementsByTagName('tbody')[0]
+    const produtoIdElement = document.getElementById("produtoId")
+    const cancelarBtnElement = document.getElementById("cancelar")
+
+    let editing = false
+
     function getProdutos() {
-        const produtos = localStorage.getItem("produtos");
-        return produtos ? JSON.parse('produtos') : [];
+        const produtos = localStorage.getItem("produtos")
+        return produtos ? JSON.parse(produtos) : []
     }
 
-    function salvarProduto() {
-        localStorage.setItem("produtos", JSON.stringify(produtos));
+    function salvarProduto(produtos) {
+        localStorage.setItem("produtos", JSON.stringify(produtos))
     }
 
-    function removerProduto() {
-        produtoElement.innerHTML = '';
+    function exibirProduto() {
+        tbody.innerHTML = ""
 
-        const produtos = getProdutos();
+        const produtos = getProdutos()
 
         for (let i = 0; i < produtos.length; i++) {
-            const produto = produtos[i];
+            const produto = produtos[i]
 
-            const row = produtoElement.insertRow();
+            const row = tbody.insertRow()
 
-            const nomeCell = row.insertCell();
-            nomeCell.textContent = produto.name;
+            const nomeCell = row.insertCell()
+            nomeCell.textContent = produto.nome
 
-            const precoCell = row.insertCell();
-            precoCell.textContent = 'R$ ' + produto.preco.toFixed(2);
+            const precoCell = row.insertCell()
+            precoCell.textContent = "R$" + produto.preco;
 
-            const disponibilidadCell = row.insertCell();
-            disponibilidadCell.textContent = produto.disponibilidade;
-            disponibilidadCell.ClassList.add(produto.disponibilidade === 'Disponivel' ? 'Disponivel' : 'Indisponivel' );
+            const disponibilidadeCell = row.insertCell()
+            disponibilidadeCell.textContent = produto.disponibilidade
+            disponibilidadeCell.classList.add(produto.disponibilidade === "Disponivel" ? 'disponivel' : 'indisponivel')
 
-            const actionCell = row.insertCell();
+            const actionCell = row.insertCell()
+            const editarBtn = document.createElement("button")
+            editarBtn.textContent = "Editar"
+            editarBtn.onclick = () => editarProduto(i)
+            actionCell.appendChild(editarBtn)
 
-            const editBtn = document.createElement('button');
-            editBtn.textContent = 'Editar';
-            editBtn.onclick = () => editarProduto(i);
-            actionCell.appendChild(editBtn);
-
-            const excluirBtn = document.createElement('button');
-            excluirBtn.textContent = 'excluir';
-            excluirBtn.onclick = () => excluirBtn(i);
-            actionCell.appendChild(excluirBtn);
+            const excluirBtn = document.createElement("button")
+            excluirBtn.textContent = "Excluir"
+            excluirBtn.onclick = () => excluirProduto(i)
+            actionCell.appendChild(excluirBtn)
         }
     }
 
-    produtoFormElement.addEventListener("submit", function (){
-        eventPreventDefault();
+    produtoFormElement.addEventListener("submit", function (event) {
+        event.preventDefault()
 
-        const nome = document.getElementById("nome").value;
-        const preco = document.getElementById("preco").value;
-        const disponibilidade = document.getElementById("disponibilidade").value;
-        const produtoId = produtoIdElement.value;
+        const nome = document.getElementById("nome").value
+        const preco = parseFloat(document.getElementById("preco").value)
+        const disponibilidade = document.getElementById("disponibilidade").value
+        const produtoId = produtoIdElement.value
 
-        if(nome && !isNaN(preco)){
-            const produtos = getProdutos();
+
+        if (nome && !isNaN(preco)) {
+            const produtos = getProdutos()
 
             if (editing) {
-                produtos[produtoId].nome = nome;
-                produtos[produtoId].preco = preco;
-                produtos[produtoId].disponibilidade = disponibilidade;
-                editing = false;
+                produtos[produtoId].nome = nome
+                produtos[produtoId].preco = preco
+                produtos[produtoId].disponibilidade = disponibilidade
+                editing = false
             } else {
-                produtos.push( {nome: nome, preco: preco, disponibilidade: disponibilidade } );
+                produtos.push({nome: nome, preco: preco, disponibilidade: disponibilidade})
             }
-            salvarProduto(produtos);
-            exibirProdutos();
-            produtoFormElement.reset();
-            produtoIdElement.value = "";
-            } else {
-            alert('pero le falta sazon')
+            salvarProduto(produtos)
+            exibirProduto()
+            produtoFormElement.reset()
+            produtoIdElement.value = ""
+        } else {
+            alert("Por favor, preencha o nome e o preço corretamente!")
         }
-    });
+    })
+
+    function editarProduto(index) {
+        editing = true
+        const produtos = getProdutos()
+        const produto = produtos[index]
+
+        document.getElementById('nome').value = produto.nome
+        document.getElementById("preco").value = produto.preco
+        document.getElementById("disponibilidade").value = produto.disponibilidade
+        produtoIdElement.value = index
+
+        cancelarBtnElement.style.display = 'inline-block'
+    }
+
+    function excluirProduto(index) {
+        if (confirm("Tem certeza que deseja excluir esse produto?")) {
+            const produtos = getProdutos();
+            produtos.splice(index, 1)
+            salvarProduto(produtos)
+            exibirProduto()
+        }
+    }
+
+    cancelarBtnElement.addEventListener("click", function () {
+        editing = false
+        produtoFormElement.reset()
+        produtoIdElement.value = "";
+        cancelarBtnElement.style.display = "none"
+    })
+
+    exibirProduto()
 })
