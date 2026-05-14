@@ -83,9 +83,8 @@ services/ → integração com API externa
 styles/ → centralização de estilos globais
 
 App.js → controle de navegação
-``` 
 
-## Telas da aplicação
+# Telas da aplicação
 Home
 
 Campo de input para CEP
@@ -101,7 +100,6 @@ Exibição completa do endereço
 
 Visualização organizada em card
 
-```
 Como executar o projeto
 
 Instalar dependências
